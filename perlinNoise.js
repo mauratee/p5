@@ -1,30 +1,33 @@
-
+let speed=0.0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  loadPixels();
-  let xoffset = 0.0;
-
-  for (let x = 0; x < windowWidth; x++) {
-    let yoffset = 0.0;
-
-    for (let y = 0; y < windowHeight; y++) {
-      const bright = map(noise(xoffset, yoffset), 0, 1, 0, 255)
-      let index = (x + y * width) * 4;
-
-      pixels[index] = 230;
-      pixels[index + 1] = 230;
-      pixels[index + 2] = 250;
-      pixels[index + 3] = bright;
-
-      yoffset += 0.0125
-    }
-    xoffset += 0.01
-    
-  }
-  updatePixels();
+  colorMode(HSB);
+  
 }
 
-function draw() {}
+function draw() {
+  loadPixels();
+  
+  let xoffset = 0.0;
+
+  for (let x = 0; x < width; x++) {
+    let yoffset = 0.0;
+
+    for (let y = 0; y < height; y++) {
+      const bright = map(noise(xoffset, yoffset, speed), 0, 1, 0, 255);
+      const hu = map(noise(xoffset, yoffset, speed), 0, 1, 0, 360);
+      const col = color(hu, 230, 250, bright);
+      set(x, y, col);
+
+      yoffset += 0.0125;
+    }
+    xoffset += 0.01;
+    
+  }
+  speed += 0.02;
+  updatePixels();
+
+}
 
 
